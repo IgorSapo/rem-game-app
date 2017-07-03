@@ -1,25 +1,35 @@
 import path from 'path';
+import webpack from 'webpack';
 
 export default {
-  devtool: 'eval-source-map',
-  entry: path.join(__dirname, '/client/index.js'),
+  // devtool: 'eval-source-map',
+  entry: [
+    'webpack-hot-middleware/client',
+    path.join(__dirname, '/client/index.js')
+  ],
   output: {
     path: '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/'
   },
+  plugins: [
+    // new webpack.NoErrorsPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ],
   module: {
     rules: [
       {
         test: /\.js?$/,
         include: path.join(__dirname, 'client'),
         exclude: [/node_modules/],
-        use: ['babel-loader']
+        use: ['react-hot-loader', 'babel-loader']
       },
       {
         test: /\.jsx?$/,
         include: path.join(__dirname, 'client'),
         exclude: [/node_modules/],
-        use: ['babel-loader']
+        use: ['react-hot-loader', 'babel-loader']
       }
     ]
   },
