@@ -10,7 +10,9 @@ class SignUpForm extends React.Component {
       email: '',
       password: '',
       passwordConfirmation: '',
-      timezone: ''
+      timezone: '',
+      errors: {},
+      isLoading: false
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -24,7 +26,13 @@ class SignUpForm extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
-    this.props.userSignupRequest(this.state);
+    this.setState({ errors: {}, isLoading: true });
+    this.props.userSignupRequest(this.state)
+      .then(() => {})
+      .catch(errors => this.setState({
+        errors: errors.response.data,
+        isLoading: false
+      }));
   }
 
   render() {
@@ -32,11 +40,13 @@ class SignUpForm extends React.Component {
       <option key={timezones[key]} value={timezones[key]}>{key}</option>
     )
 
+    const { errors } = this.state;
+
     return (
       <form onSubmit={this.onSubmit}>
         <h2>Join our community!</h2>
 
-        <div className="form-group">
+        <div className={`form-group ${errors.username ? 'has-error' : ''}`}>
           <label htmlFor="username" className="control-label">Username</label>
           <input
             value={this.state.username}
@@ -44,9 +54,12 @@ class SignUpForm extends React.Component {
             type="text"
             name="username"
             className="form-control"/>
+          { errors.username ? 
+            <span className="help-block">{errors.username}</span> :
+            null }
         </div>
 
-        <div className="form-group">
+        <div className={`form-group ${errors.email ? 'has-error' : ''}`}>
           <label htmlFor="email" className="control-label">Email</label>
           <input
             value={this.state.email}
@@ -54,9 +67,12 @@ class SignUpForm extends React.Component {
             type="text"
             name="email"
             className="form-control"/>
+          { errors.email ? 
+            <span className="help-block">{errors.email}</span> :
+            null }
         </div>
 
-        <div className="form-group">
+        <div className={`form-group ${errors.password ? 'has-error' : ''}`}>
           <label htmlFor="password" className="control-label">Password</label>
           <input
             value={this.state.password}
@@ -64,19 +80,25 @@ class SignUpForm extends React.Component {
             type="password"
             name="password"
             className="form-control"/>
+          { errors.password ? 
+            <span className="help-block">{errors.password}</span> :
+            null }
         </div>
 
-        <div className="form-group">
-          <label htmlFor="passwordConfirmation" className="control-label">Password Confirmation</label>
+        <div className={`form-group ${errors.passwordConfirmation ? 'has-error' : ''}`}>
+          <label htmlFor="passwordConfirmation" className="control-label">Password confirmation</label>
           <input
             value={this.state.passwordConfirmation}
             onChange={this.onChange}
             type="password"
             name="passwordConfirmation"
             className="form-control"/>
+          { errors.passwordConfirmation ? 
+            <span className="help-block">{errors.passwordConfirmation}</span> :
+            null }
         </div>
 
-        <div className="form-group">
+        <div className={`form-group ${errors.timezone ? 'has-error' : ''}`}>
           <label
             htmlFor="timezone"
             className="control-label">
@@ -90,11 +112,15 @@ class SignUpForm extends React.Component {
             <option value="" disabled>Choose your timezone</option>
             {options}
           </select>
+          { errors.timezone ? 
+            <span className="help-block">{errors.timezone}</span> :
+            null }
         </div>
 
         <div className="form-group">
           <button
             type="submit"
+            disabled={this.state.isLoading}
             className="btn btn-primary btn-lg">
             Sign Up
           </button>
