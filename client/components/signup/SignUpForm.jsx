@@ -3,6 +3,7 @@ import timezones from '../../data/timezones';
 import PropTypes from 'prop-types';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../common/TextFieldGroup';
+import { withRouter } from 'react-router-dom';
 
 class SignUpForm extends React.Component {
   constructor(props) {
@@ -46,7 +47,9 @@ class SignUpForm extends React.Component {
         isLoading: true
       });
       this.props.userSignupRequest(this.state)
-        .then(() => {})
+        .then(() => {
+          this.props.history.push('/');
+        })
         .catch(errors => this.setState({
           errors: errors.response.data,
           isLoading: false
@@ -131,4 +134,4 @@ SignUpForm.propTypes = {
   userSignupRequest: PropTypes.func.isRequired
 }
 
-export default SignUpForm;
+export default withRouter(SignUpForm);
