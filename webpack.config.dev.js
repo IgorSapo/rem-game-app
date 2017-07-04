@@ -21,13 +21,19 @@ export default {
     rules: [
       {
         test: /\.js?$/,
-        include: path.join(__dirname, 'client'),
+        include: [
+          path.join(__dirname, 'client'),
+          // path.join(__dirname, 'server/shared')
+        ],
         exclude: [/node_modules/],
         use: ['react-hot-loader', 'babel-loader']
       },
       {
         test: /\.jsx?$/,
-        include: path.join(__dirname, 'client'),
+        include: [
+          path.join(__dirname, 'client'),
+          // path.join(__dirname, 'server/shared')
+        ],
         exclude: [/node_modules/],
         use: ['react-hot-loader', 'babel-loader']
       }
