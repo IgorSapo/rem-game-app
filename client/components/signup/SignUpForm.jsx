@@ -48,6 +48,10 @@ class SignUpForm extends React.Component {
       });
       this.props.userSignupRequest(this.state)
         .then(() => {
+          this.props.addFlashMessage({
+            type: 'Success',
+            text: 'You have signed up successfully! Welcome!'
+          })
           this.props.history.push('/');
         })
         .catch(errors => this.setState({

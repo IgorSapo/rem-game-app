@@ -6,12 +6,13 @@ import routes from './routes';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-
+import rootReducer from './rootReducer';
+import { composeWithDevTools } from 'redux-devtools-extension';
 
 const history = createBrowserHistory();
 const store = createStore(
-  (state ={}) => state, // reducer
-  applyMiddleware(thunk) // middleware
+  rootReducer,
+  composeWithDevTools(applyMiddleware(thunk))
 );
 
 const Root = () => (
