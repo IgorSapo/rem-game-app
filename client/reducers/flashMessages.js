@@ -12,6 +12,13 @@ const flashMessages = (state = [], action = {}) => {
           text: action.message.text
         }
       ];
+      // return state.concat({
+      //   id: v4(),
+      //   type: action.message.type,
+      //   text: action.message.text
+      // });
+    case types.DELETE_FLASH_MESSAGE:
+      return state.filter(message => message.id != action.id)
     default:
       return state;
   }
