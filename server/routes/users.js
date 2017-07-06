@@ -35,7 +35,18 @@ const validateInput = (data, otherValidations) => {
     })
 }
 
-router.post('', (req, res) => {
+router.get('/:id', ( req, res ) => {
+  User
+    .query({
+      select: [ 'username', 'email'],
+      where: { email: req.params.id },
+      orWhere: { username: req.params.id }
+    })
+    .fetch()
+    .then(user => res.json({ user }));
+})
+
+router.post('/', (req, res) => {
   validateInput(req.body, commonValidations)
     .then(({ errors, isValid }) => {
       if(isValid) {

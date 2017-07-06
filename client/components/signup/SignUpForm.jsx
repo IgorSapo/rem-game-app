@@ -15,16 +15,38 @@ class SignUpForm extends React.Component {
       passwordConfirmation: '',
       timezone: '',
       errors: {},
-      isLoading: false
+      isLoading: false,
+      invalid: false
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.checkUserExists = this.checkUserExists.bind(this);
   }
 
   onChange(e) {
     this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  checkUserExists(e) {
+    const field = e.target.name;
+    const value = e.target.value;
+    let invalid = false;
+    if (value !== '') {
+      this.props.isUserExists(value)
+        .then(res => {
+          let errors = this.state.errors;
+          if (res.data.user) {
+            errors[field] = `There is user with this ${field}`;
+            invalid = true;
+          } else {
+            errors[field] = '';
+            invalid = false;
+          }
+          this.setState({ errors, invalid });
+        })
+    }
   }
 
   isValid() {
@@ -77,6 +99,7 @@ class SignUpForm extends React.Component {
           label='Username'
           value={this.state.username}
           onChange={this.onChange}
+          checkUserExists={this.checkUserExists}
           error={errors.username}/>
 
         <TextFieldGroup
@@ -84,6 +107,7 @@ class SignUpForm extends React.Component {
           label='Email'
           value={this.state.email}
           onChange={this.onChange}
+          checkUserExists={this.checkUserExists}
           error={errors.email}/>
 
         <TextFieldGroup
@@ -124,7 +148,7 @@ class SignUpForm extends React.Component {
         <div className="form-group">
           <button
             type="submit"
-            disabled={this.state.isLoading}
+            disabled={this.state.isLoading || this.state.invalid}
             className="btn btn-primary btn-lg">
             Sign Up
           </button>
@@ -135,7 +159,9 @@ class SignUpForm extends React.Component {
 }
 
 SignUpForm.propTypes = {
-  userSignupRequest: PropTypes.func.isRequired
+  userSignupRequest: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func.isRequired,
+  isUserExists: PropTypes.func.isRequired
 }
 
 export default withRouter(SignUpForm);

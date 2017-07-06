@@ -2,12 +2,12 @@ import React from 'react';
 import SignUpForm from './SignUpForm';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { userSignupRequest } from '../../actions/signupActions';
+import { userSignupRequest, isUserExists } from '../../actions/signupActions';
 import { addFlashMessage } from '../../actions/flashMessages';
 
 class SignUpPage extends React.Component {
   render() {
-    const { userSignupRequest, addFlashMessage } = this.props;
+    const { userSignupRequest, addFlashMessage, isUserExists } = this.props;
 
     return (
       <div>
@@ -15,7 +15,8 @@ class SignUpPage extends React.Component {
           <div className="col-md-4 col-md-offset-4">
             <SignUpForm
               userSignupRequest={userSignupRequest}
-              addFlashMessage={addFlashMessage}/>
+              addFlashMessage={addFlashMessage}
+              isUserExists={isUserExists}/>
           </div>
         </div>
       </div>
@@ -25,7 +26,8 @@ class SignUpPage extends React.Component {
 
 SignUpPage.propTypes = {
   userSignupRequest: PropTypes.func.isRequired,
-  addFlashMessage: PropTypes.func.isRequired
+  addFlashMessage: PropTypes.func.isRequired,
+  isUserExists: PropTypes.func.isRequired
 }
 
-export default connect(null, { userSignupRequest, addFlashMessage })(SignUpPage);
+export default connect(null, { userSignupRequest, addFlashMessage, isUserExists })(SignUpPage);
