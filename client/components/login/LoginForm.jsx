@@ -43,7 +43,7 @@ class LoginForm extends React.Component {
       this.props.login(this.state)
         .then(res => this.props.history.push('/'))
         .catch(err => this.setState({
-          errors: err.data.errors,
+          errors: err.response.data.errors,
           isLoading: false
         }));
     }
@@ -54,6 +54,7 @@ class LoginForm extends React.Component {
     return (
       <form action="" onSubmit={this.onSubmit}>
         <h2>Login</h2>
+        { errors.form && <div className="alert alert-danger">{errors.form}</div>}
         <TextFieldGroup 
           field='identifier'
           label='Username / email'
