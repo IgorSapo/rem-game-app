@@ -42,5 +42,9 @@ export default {
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: ['node_modules']
+  },
+  node: {
+    net: 'empty',
+    dns: 'empty'
   }
 }
