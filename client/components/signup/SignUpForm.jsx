@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import validateInput from '../../../server/shared/validations/signup';
 import TextFieldGroup from '../common/TextFieldGroup';
 import { withRouter } from 'react-router-dom';
+import isEmpty from 'lodash/isEmpty';
 
 class SignUpForm extends React.Component {
   constructor(props) {
@@ -32,19 +33,19 @@ class SignUpForm extends React.Component {
   checkUserExists(e) {
     const field = e.target.name;
     const value = e.target.value;
-    let invalid = false;
     if (value !== '') {
       this.props.isUserExists(value)
         .then(res => {
           let errors = this.state.errors;
           if (res.data.user) {
             errors[field] = `There is user with this ${field}`;
-            invalid = true;
           } else {
-            errors[field] = '';
-            invalid = false;
+            delete errors[field];
           }
-          this.setState({ errors, invalid });
+          this.setState({
+            errors,
+            invalid: !isEmpty(errors)
+          });
         })
     }
   }
