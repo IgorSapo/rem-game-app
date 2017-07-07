@@ -17,3 +17,9 @@ export const login = data => dispatch =>
       setAuthorizationToken(token);
       dispatch(setCurrentUser(jwt.decode(token)));
     });
+
+export const logout = () => dispatch => {
+  localStorage.removeItem('jwtToken');
+  setAuthorizationToken(false);
+  dispatch(setCurrentUser({}));
+}
