@@ -13,25 +13,23 @@ export default (req, res, next) => {
 
       if(err) {
         res.status(401).json({ error: 'Failed to authenticate'});
+      } else {
+        User
+          .query({
+            where: { id: decoded.id },
+            select: [ 'email', 'id', 'username']
+          })
+          .fetch()
+          .then(user => {
+            if(!user) {
+              res.status(404).json({ error: 'No such user'})
+            } else {
+              req.currentUser = user;
+              next();
+            }
+          })
       }
-
-      User
-        .query({
-          where: { id: decoded.id },
-          select: [ 'email', 'id', 'username']
-        })
-        .fetch()
-        .then(user => {
-          if(!user) {
-            res.status(404).json({ error: 'No such user'})
-          } else {
-            req.currentUser = user;
-            next();
-          }
-        })
-
     });
-
   } else {
     res.status(403).json({
       error: 'No token provided'

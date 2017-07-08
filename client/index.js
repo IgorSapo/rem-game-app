@@ -9,7 +9,7 @@ import thunk from 'redux-thunk';
 import rootReducer from './rootReducer';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import setAuthorizationToken from './utils/setAuthorizationToken';
-import jwt from 'jsonwebtoken';
+import jwtDecode from 'jwt-decode';
 import { setCurrentUser } from './actions/authActions';
 
 const history = createBrowserHistory();
@@ -28,7 +28,7 @@ const Root = () => (
 
 if(localStorage.jwtToken) {
   setAuthorizationToken(localStorage.getItem('jwtToken'));
-  store.dispatch(setCurrentUser(jwt.decode(localStorage.jwtToken)))
+  store.dispatch(setCurrentUser(jwtDecode(localStorage.jwtToken)))
 }
 
 
