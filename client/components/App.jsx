@@ -5,6 +5,7 @@ import Greetings from './Greetings';
 import SignUpPage from './signup/SignUpPage';
 import FlashMessagesList from './flash/FlashMessagesList';
 import LoginPage from './login/LoginPage';
+import NewEventPage from './events/NewEventPage';
 
 const App = ({ match }) => (
   <div className='container'>
@@ -13,6 +14,7 @@ const App = ({ match }) => (
     <Route exact path={'/'} component={Greetings} />
     <Route exact path={'/signup'} component={SignUpPage} />
     <Route exact path={'/login'} component={LoginPage} />
+    <Route exact path={'/new-event'} component={NewEventPage} />
   </div>
 )
 
