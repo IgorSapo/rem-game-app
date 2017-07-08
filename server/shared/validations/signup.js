@@ -1,4 +1,5 @@
 import Validator from 'validator';
+import isEmpty from 'lodash/isEmpty';
 
 const validateInput = data => {
   let errors = {};
@@ -27,7 +28,7 @@ const validateInput = data => {
 
   return {
     errors,
-    isValid: Object.keys(errors).length < 1
+    isValid: isEmpty(errors);
   }
 }
 
