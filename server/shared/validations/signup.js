@@ -28,7 +28,7 @@ const validateInput = data => {
 
   return {
     errors,
-    isValid: isEmpty(errors);
+    isValid: isEmpty(errors)
   }
 }
 
